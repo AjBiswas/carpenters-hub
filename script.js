@@ -24,7 +24,11 @@ let maxMoved = 0;
 
 // object-fit:cover crops the photo differently at every window size/ratio —
 // these describe exactly how, so any point on the photo can be converted to
-// its current on-screen position, recomputed whenever the window resizes
+// its current on-screen position, recomputed whenever the window resizes.
+// object-position is 32% center (not the default 50%) so a tall/narrow
+// (mobile) crop stays centered on the lamp instead of the image's raw
+// geometric middle — OBJECT_POS_X must match style.css's .bg rule exactly.
+const OBJECT_POS_X = 0.32;
 let scale = 1;
 let offsetX = 0;
 let offsetY = 0;
@@ -33,7 +37,7 @@ function updateCoverMapping() {
   const w = window.innerWidth;
   const h = window.innerHeight;
   scale = Math.max(w / IMG_W, h / IMG_H);
-  offsetX = (IMG_W * scale - w) / 2;
+  offsetX = (IMG_W * scale - w) * OBJECT_POS_X;
   offsetY = (IMG_H * scale - h) / 2;
 }
 
