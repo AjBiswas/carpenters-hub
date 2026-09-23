@@ -1,4 +1,5 @@
 const scene = document.getElementById("scene");
+const frame = document.querySelector(".frame");
 const bgOn = document.querySelector(".bg-on");
 const cordVisual = document.getElementById("cordVisual");
 const ball = document.getElementById("ball");
@@ -34,8 +35,13 @@ let offsetX = 0;
 let offsetY = 0;
 
 function updateCoverMapping() {
-  const w = window.innerWidth;
-  const h = window.innerHeight;
+  // measure the actual rendered frame, not window.innerWidth/Height — on
+  // mobile the browser's address bar can show/hide independently of the
+  // page, and reading raw window dimensions there causes the cord to
+  // visibly jump; the frame element (sized via 100dvh in CSS) stays stable
+  const rect = frame.getBoundingClientRect();
+  const w = rect.width;
+  const h = rect.height;
   scale = Math.max(w / IMG_W, h / IMG_H);
   offsetX = (IMG_W * scale - w) * OBJECT_POS_X;
   offsetY = (IMG_H * scale - h) / 2;
@@ -147,10 +153,19 @@ ball.addEventListener("pointerup", onPointerUp);
 ball.addEventListener("pointercancel", onPointerUp);
 
 // keep the cord locked to the lamp any time the window is resized or the
-// display ratio otherwise changes (maximizing, rotating, DevTools, etc.)
-window.addEventListener("resize", () => {
-  if (!dragging) clearCordLength();
-});
+// display ratio otherwise changes (maximizing, rotating, DevTools, etc.) —
+// debounced so a burst of resize events (e.g. a mobile browser's address
+// bar animating away) settles once instead of visibly jittering
+let resizeTimer = null;
+function onViewportChange() {
+  if (dragging) return;
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(clearCordLength, 120);
+}
+window.addEventListener("resize", onViewportChange);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", onViewportChange);
+}
 
 // force a clean "off" state with no transition on load, and again if the
 // browser restores this page from its back/forward cache (bfcache) — both

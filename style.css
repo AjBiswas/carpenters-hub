@@ -18,6 +18,7 @@ html, body {
 .scene {
   position: relative;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   display: flex;
   align-items: center;
@@ -490,11 +491,42 @@ html, body {
    computed in script.js from the photo's own pixels, not these rules. */
 
 @media (max-width: 700px) {
-  .hero,
-  .hint,
   .brand-tag,
   .bottombar {
     display: none;
+  }
+
+  .hero {
+    left: 50%;
+    top: 70px;
+    width: 90vw;
+    max-width: 340px;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .hero .rule {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 {
+    font-size: 23px;
+  }
+
+  .hero-sub {
+    font-size: 10.5px;
+    margin-bottom: 1.2em;
+  }
+
+  .hint {
+    bottom: 3%;
+    top: auto;
+  }
+
+  .hint-main,
+  .hint-sub {
+    font-size: 11px;
   }
 
   .card {
