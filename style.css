@@ -1,0 +1,545 @@
+* {
+  box-sizing: border-box;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #0a0908;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.scene {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* while .preload is present (right up to first paint), every animatable
+   element snaps straight to its resting state with no transition — this
+   is what stops a stale light-on state (restored by the browser's
+   back/forward cache) from visibly animating back to off on load/refresh */
+.preload .bg,
+.preload .card,
+.preload .hero,
+.preload .hint,
+.preload .cord-visual,
+.preload .ball {
+  transition: none !important;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  container-type: inline-size;
+  z-index: 1;
+}
+
+.rule {
+  display: block;
+  height: 1px;
+  background: currentColor;
+  opacity: .5;
+  border: 0;
+}
+
+/* ---------- Background photos ---------- */
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 1s ease;
+  z-index: 0;
+}
+
+.bg-off { opacity: 1; }
+.bg-on { opacity: 0; }
+.scene.light-on .bg-off { opacity: 0; }
+.scene.light-on .bg-on { opacity: 1; }
+
+/* ---------- Top / bottom frosted chrome ---------- */
+/* blurs whatever text is baked into the photo underneath; real text sits on top, crisp */
+
+.topbar, .bottombar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #f3ece0;
+  z-index: 3;
+  padding: 0 var(--header-pad-x);
+}
+
+.topbar {
+  top: 0;
+  height: 15.5%;
+  padding-top: var(--header-pad-top);
+  align-items: flex-start;
+  background: linear-gradient(rgba(6,5,4,.55), rgba(6,5,4,0));
+}
+
+.bottombar {
+  bottom: 0;
+  height: 14%;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 3%;
+  background: linear-gradient(rgba(6,5,4,0), rgba(6,5,4,.5));
+}
+
+/* top-right brand tag */
+
+.brand-tag {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex: none;
+  font-size: .68cqw;
+  letter-spacing: .18em;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.brand-tag .rule {
+  width: 1.6em;
+  margin: .5em 0 0 auto;
+}
+
+/* bottom: signature */
+
+.signature {
+  text-align: right;
+  font-family: 'Caveat', cursive;
+  font-size: 1.5cqw;
+  line-height: 1.2;
+}
+
+.signature .rule {
+  width: 2.6em;
+  margin: .3em 0 0 auto;
+}
+
+/* ---------- Hero (off state) ---------- */
+
+.hero {
+  position: absolute;
+  left: 4.5%;
+  top: 30%;
+  width: 20%;
+  color: #f4ecdc;
+  text-shadow: 0 2px 18px rgba(0,0,0,.55);
+  z-index: 2;
+  opacity: 1;
+  transition: opacity .6s ease;
+}
+
+.scene.light-on .hero {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rule-top {
+  width: 2.4em;
+  margin-bottom: 1.4em;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 2.5cqw;
+  line-height: 1.2;
+  letter-spacing: .045em;
+  margin: 0 0 .5em;
+}
+
+.hero-sub {
+  font-size: .74cqw;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  opacity: .85;
+  margin: 0 0 1.5em;
+}
+
+.hero .rule {
+  width: 2.4em;
+  margin-bottom: 1.6em;
+}
+
+.hint {
+  position: absolute;
+  left: 31.8%;
+  top: 49.5%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #f4ecdc;
+  text-shadow: 0 2px 14px rgba(0,0,0,.6);
+  z-index: 2;
+  opacity: 1;
+  transition: opacity .6s ease;
+  white-space: nowrap;
+}
+
+.scene.light-on .hint {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hint-main {
+  font-size: .8cqw;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.hint-sub {
+  font-size: .8cqw;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .6;
+}
+
+/* ---------- Pull-cord: draggable cord + ball, stretches and springs back ---------- */
+
+.cord-visual {
+  position: absolute;
+  left: 31.8%;
+  top: 29.9%;
+  width: 2px;
+  height: 15.6%;
+  background: linear-gradient(#4a3d2e, #1c150d);
+  transform: translateX(-50%);
+  transition: height .5s cubic-bezier(.34,1.56,.64,1), background .6s ease;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.cord-visual.dragging {
+  transition: background .6s ease;
+}
+
+.scene.light-on .cord-visual {
+  background: linear-gradient(#a3855c, #6b5238);
+}
+
+.ball {
+  position: absolute;
+  left: 31.8%;
+  top: 45.5%;
+  width: 1.8%;
+  aspect-ratio: 1;
+  max-width: 26px;
+  min-width: 15px;
+  transform: translate(-50%, -50%);
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  background: radial-gradient(circle at 35% 30%, #8a5a30, #4a2f16);
+  box-shadow: 0 2px 6px rgba(0,0,0,.55);
+  cursor: grab;
+  touch-action: none;
+  transition: top .5s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease, background .6s ease;
+  z-index: 6;
+}
+
+.ball.dragging {
+  transition: background .6s ease;
+}
+
+.scene.light-on .ball {
+  background: radial-gradient(circle at 35% 30%, #d4903f, #8a5a2c);
+  box-shadow: 0 2px 6px rgba(0,0,0,.5), 0 0 14px rgba(255, 200, 120, .35);
+}
+
+.ball:hover,
+.ball:focus-visible {
+  box-shadow: 0 0 0 9px rgba(255, 235, 190, .16), 0 2px 6px rgba(0,0,0,.55);
+  outline: none;
+}
+
+.ball:active {
+  cursor: grabbing;
+}
+
+/* ---------- Login card (on state) ---------- */
+
+.card {
+  position: absolute;
+  left: 57%;
+  top: 50%;
+  width: 29%;
+  max-height: 88%;
+  min-height: 63%;
+  height: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 3.4% 3%;
+  color: #3c2f1f;
+  background: rgba(250, 244, 231, .8);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+  border-radius: 1.3cqw;
+  box-shadow: 0 1.6cqw 3.4cqw rgba(0,0,0,.35);
+  opacity: 0;
+  transform: translateY(calc(-50% + 1.5%));
+  pointer-events: none;
+  transition: opacity .6s ease, transform .6s ease;
+  z-index: 4;
+}
+
+.scene.light-on .card {
+  opacity: 1;
+  transform: translateY(-50%);
+  pointer-events: auto;
+}
+
+.card-label {
+  font-size: .78cqw;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+.card h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 3cqw;
+  line-height: 1.14;
+  margin: .3em 0 .3em;
+}
+
+.card-sub {
+  font-size: .78cqw;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .65;
+  margin: 0 0 1.5em;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: .8em;
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(80,60,40,.15);
+  border-radius: .6cqw;
+  padding: .85em 1.1em;
+  margin-bottom: .8em;
+}
+
+.field-icon {
+  width: 1.05cqw;
+  height: 1.05cqw;
+  opacity: .55;
+  flex: none;
+}
+
+.input-row input {
+  border: 0;
+  background: transparent;
+  outline: none;
+  font-size: 1cqw;
+  color: #3c2f1f;
+  width: 100%;
+  font-family: inherit;
+}
+
+.input-row input::placeholder {
+  color: #8c7a63;
+  opacity: .8;
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .76cqw;
+  margin: .2em 0 1.3em;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  cursor: pointer;
+}
+
+.remember input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.tick {
+  width: 1cqw;
+  height: 1cqw;
+  border: 1px solid rgba(80,60,40,.45);
+  border-radius: 2px;
+  position: relative;
+  flex: none;
+}
+
+.remember input:checked + .tick {
+  background: #5b4a34;
+  border-color: #5b4a34;
+}
+
+.remember input:checked + .tick::after {
+  content: "";
+  position: absolute;
+  left: 26%;
+  top: 4%;
+  width: 32%;
+  height: 58%;
+  border: solid #f7efe0;
+  border-width: 0 2px 2px 0;
+  transform: rotate(40deg);
+}
+
+.forgot {
+  color: inherit;
+  opacity: .75;
+  text-decoration: underline;
+}
+
+.forgot:hover {
+  opacity: 1;
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: .2em;
+  background: linear-gradient(135deg, #8a6a3f, #6b4f2c);
+  color: #f7efe0;
+  border: 0;
+  border-radius: .6cqw;
+  padding: 1em;
+  font-size: 1.05cqw;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: .02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+.arrow {
+  font-family: Arial, sans-serif;
+}
+
+.switch-form {
+  margin: 1em 0 0;
+  text-align: center;
+  font-size: .76cqw;
+  opacity: .8;
+}
+
+.switch-form a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.switch-form a:hover {
+  opacity: .8;
+}
+
+.card-footer {
+  margin-top: auto;
+  padding-top: 1.1em;
+  text-align: center;
+  font-size: .66cqw;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  opacity: .55;
+  border-top: 1px solid rgba(80,60,40,.15);
+}
+
+/* ---------- Mobile ---------- */
+/* the wide-photo layout's percentage positions stop making sense on a
+   narrow/portrait screen — hide the marketing chrome that has nowhere
+   good to go, and re-center the card as a normal, comfortably-sized
+   mobile sheet. The pull-cord keeps working as-is: its position is
+   computed in script.js from the photo's own pixels, not these rules. */
+
+@media (max-width: 700px) {
+  .hero,
+  .hint,
+  .brand-tag,
+  .bottombar {
+    display: none;
+  }
+
+  .card {
+    left: 50%;
+    top: 50%;
+    width: 88vw;
+    max-width: 380px;
+    min-height: 0;
+    max-height: 86vh;
+    padding: 26px 22px;
+    border-radius: 16px;
+    transform: translate(-50%, calc(-50% + 3vh));
+  }
+
+  .scene.light-on .card {
+    transform: translate(-50%, -50%);
+  }
+
+  .card-label { font-size: 11px; }
+
+  .card h2 {
+    font-size: 26px;
+    line-height: 1.18;
+  }
+
+  .card-sub { font-size: 10.5px; }
+
+  .input-row {
+    border-radius: 9px;
+    padding: 12px 14px;
+  }
+
+  .field-icon { width: 17px; height: 17px; }
+
+  .input-row input { font-size: 14px; }
+
+  .row-between { font-size: 12px; }
+
+  .tick { width: 16px; height: 16px; }
+
+  .login-btn {
+    border-radius: 9px;
+    font-size: 15px;
+  }
+
+  .switch-form { font-size: 12px; }
+
+  .card-footer { font-size: 9px; }
+}

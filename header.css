@@ -1,0 +1,52 @@
+/* Shared header/logo geometry — used by every page (login, home, and any
+   future page) so the icon and wordmark sit in the exact same position
+   and size everywhere, regardless of that page's own layout system.
+   Uses vw/vh (not cqw or px) so it lines up pixel-for-pixel across pages. */
+
+:root {
+  --header-pad-x: 3.4vw;
+  --header-pad-top: 1.6vh;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: none;
+}
+
+.logo-icon {
+  width: 4vw;
+  height: 4vw;
+  margin-right: .15vw;
+  object-fit: contain;
+  opacity: .95;
+  flex: none;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.logo-the {
+  font-size: .72vw;
+  letter-spacing: .3em;
+  opacity: .8;
+}
+
+.logo-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 1.5vw;
+  letter-spacing: .14em;
+  white-space: nowrap;
+}
+
+.logo-tag {
+  font-size: .6vw;
+  letter-spacing: .16em;
+  opacity: .65;
+  margin-top: .3em;
+}
