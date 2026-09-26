@@ -256,7 +256,10 @@ img {
 
 .hero-cta:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(90, 65, 30, .3), 0 0 30px rgba(212, 161, 90, .3);
+  box-shadow:
+    0 0 0 3px rgba(212, 161, 90, .55),
+    0 0 30px rgba(212, 161, 90, .5),
+    0 12px 28px rgba(90, 65, 30, .28);
 }
 
 /* ---------- Catalog grid ---------- */
@@ -693,7 +696,10 @@ img {
 
 .consult-btn--primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 26px rgba(90, 65, 30, .3), 0 0 30px rgba(212, 161, 90, .4);
+  box-shadow:
+    0 0 0 3px rgba(212, 161, 90, .6),
+    0 0 34px rgba(212, 161, 90, .55),
+    0 10px 26px rgba(90, 65, 30, .3);
 }
 
 .consult-btn--outline {
@@ -806,15 +812,14 @@ img {
 
 .modal-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(90, 65, 30, .3), 0 0 24px rgba(212, 161, 90, .28);
+  box-shadow:
+    0 0 0 3px rgba(212, 161, 90, .55),
+    0 0 24px rgba(212, 161, 90, .5),
+    0 10px 24px rgba(90, 65, 30, .28);
 }
 
 .consult-submit {
   margin-top: 20px;
-}
-
-.modal-btn:hover {
-  transform: translateY(-1px);
 }
 
 .modal-btn:active {

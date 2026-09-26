@@ -451,7 +451,10 @@ html, body {
 
 .login-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 .5cqw 1.4cqw rgba(90,65,30,.3), 0 0 1.8cqw rgba(212,161,90,.3);
+  box-shadow:
+    0 0 0 .18cqw rgba(212,161,90,.55),
+    0 0 1.6cqw rgba(212,161,90,.55),
+    0 .5cqw 1.4cqw rgba(90,65,30,.28);
 }
 
 .login-btn:active {
