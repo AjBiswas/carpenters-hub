@@ -401,18 +401,6 @@ img {
   pointer-events: none;
 }
 
-/* a very mild blur sits behind the text block itself (above), and a soft
-   glow hugs the exact shape of each letter on top of that — together they
-   stay legible against any photo without masking much of the image */
-.catalog-overlay .catalog-name,
-.catalog-overlay .catalog-sub {
-  text-shadow:
-    0 0 3px rgba(15, 11, 7, .9),
-    0 0 8px rgba(15, 11, 7, .75),
-    0 0 16px rgba(15, 11, 7, .55),
-    0 0 30px rgba(15, 11, 7, .4);
-}
-
 /* ---------- Sample showcase: cinematic rotating spotlight ---------- */
 
 .showcase {
