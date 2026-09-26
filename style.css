@@ -431,7 +431,6 @@ html, body {
 
 .login-btn {
   position: relative;
-  overflow: hidden;
   width: 100%;
   margin-top: .2em;
   background: linear-gradient(135deg, #8a6a3f, #6b4f2c);
@@ -447,33 +446,17 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: .5em;
-  transition: transform .2s ease, box-shadow .3s ease;
-}
-
-/* a soft diagonal shine sweeps across on hover */
-.login-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  left: -75%;
-  width: 50%;
-  background: linear-gradient(115deg, transparent, rgba(255,255,255,.4), transparent);
-  transform: skewX(-20deg);
-  transition: left .65s ease;
-  pointer-events: none;
+  transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s cubic-bezier(.22,1,.36,1);
 }
 
 .login-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 .6cqw 1.6cqw rgba(90,65,30,.35);
-}
-
-.login-btn:hover::after {
-  left: 130%;
+  box-shadow: 0 .5cqw 1.4cqw rgba(90,65,30,.3), 0 0 1.8cqw rgba(212,161,90,.3);
 }
 
 .login-btn:active {
-  transform: translateY(1px);
+  transform: translateY(0);
+  transition: transform .15s ease;
 }
 
 .arrow {

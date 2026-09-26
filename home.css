@@ -242,7 +242,6 @@ img {
 
 .hero-cta {
   position: relative;
-  overflow: hidden;
   display: inline-block;
   background: linear-gradient(135deg, #8a6a3f, #6b4f2c);
   color: #f7efe0;
@@ -252,12 +251,12 @@ img {
   padding: 14px 34px;
   border-radius: 6px;
   box-shadow: 0 10px 30px rgba(90, 65, 30, .25);
-  transition: transform .2s ease, box-shadow .3s ease;
+  transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s cubic-bezier(.22,1,.36,1);
 }
 
 .hero-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 34px rgba(90, 65, 30, .38);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(90, 65, 30, .3), 0 0 30px rgba(212, 161, 90, .3);
 }
 
 /* ---------- Catalog grid ---------- */
@@ -678,14 +677,13 @@ img {
 
 .consult-btn {
   position: relative;
-  overflow: hidden;
   font-family: 'Playfair Display', serif;
   font-size: 15px;
   padding: 14px 30px;
   border-radius: 6px;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: transform .2s ease, background .2s ease, box-shadow .3s ease;
+  transition: transform .5s cubic-bezier(.22,1,.36,1), background .3s ease, box-shadow .5s cubic-bezier(.22,1,.36,1);
 }
 
 .consult-btn--primary {
@@ -694,29 +692,8 @@ img {
 }
 
 .consult-btn--primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(212, 161, 90, .35);
-}
-
-/* a soft diagonal shine sweeps across the primary CTA buttons on hover */
-.hero-cta::after,
-.modal-btn::after,
-.consult-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  left: -75%;
-  width: 50%;
-  background: linear-gradient(115deg, transparent, rgba(255,255,255,.45), transparent);
-  transform: skewX(-20deg);
-  transition: left .65s ease;
-  pointer-events: none;
-}
-
-.hero-cta:hover::after,
-.modal-btn:hover::after,
-.consult-btn:hover::after {
-  left: 130%;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(90, 65, 30, .3), 0 0 30px rgba(212, 161, 90, .4);
 }
 
 .consult-btn--outline {
@@ -815,7 +792,6 @@ img {
 
 .modal-btn {
   position: relative;
-  overflow: hidden;
   width: 100%;
   background: linear-gradient(135deg, #8a6a3f, #6b4f2c);
   color: #f7efe0;
@@ -825,11 +801,12 @@ img {
   font-family: 'Playfair Display', serif;
   font-size: 15.5px;
   cursor: pointer;
-  transition: transform .2s ease, box-shadow .3s ease;
+  transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s cubic-bezier(.22,1,.36,1);
 }
 
 .modal-btn:hover {
-  box-shadow: 0 10px 24px rgba(90, 65, 30, .3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(90, 65, 30, .3), 0 0 24px rgba(212, 161, 90, .28);
 }
 
 .consult-submit {
