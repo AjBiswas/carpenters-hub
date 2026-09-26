@@ -287,11 +287,11 @@ img {
 }
 
 .catalog-grid {
-  max-width: 1200px;
+  max-width: 1360px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
+  gap: 24px;
 }
 
 .catalog-card {
@@ -362,6 +362,20 @@ img {
   background: none;
 }
 
+/* a very light, full-width blur band low in the card — extra legibility
+   underneath the per-letter glow, without a hard edge or hiding much photo */
+.catalog-card--photo::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  background: linear-gradient(to top, rgba(15, 11, 7, .28), transparent);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+  z-index: 1;
+}
+
 .catalog-photo {
   width: 100%;
   height: 100%;
@@ -380,6 +394,7 @@ img {
   left: 24px;
   right: 24px;
   bottom: 20px;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 2px;
