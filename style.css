@@ -431,9 +431,9 @@ html, body {
 
 .login-btn {
   position: relative;
+  isolation: isolate;
   width: 100%;
   margin-top: .2em;
-  background: linear-gradient(135deg, #8a6a3f, #6b4f2c);
   color: #f7efe0;
   border: 0;
   border-radius: .6cqw;
@@ -449,19 +449,29 @@ html, body {
   transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s cubic-bezier(.22,1,.36,1);
 }
 
+/* the rotating ring (behind everything) and a solid fill just above it
+   that covers all but a thin 2px margin — so only that margin ever
+   shows the ring, with no mask-composite quirks to worry about */
 .login-btn::before {
   content: "";
   position: absolute;
   inset: -2px;
+  z-index: -2;
   border-radius: inherit;
-  padding: 2px;
   background: conic-gradient(from 0deg, transparent 0%, transparent 78%, #f7dfa8 90%, #fff6e0 94%, #f7dfa8 98%, transparent 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
   opacity: 0;
   transition: opacity .35s ease;
   animation: trace-ring 2.4s linear infinite;
+  pointer-events: none;
+}
+
+.login-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #8a6a3f, #6b4f2c);
   pointer-events: none;
 }
 
